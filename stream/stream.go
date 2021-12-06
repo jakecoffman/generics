@@ -30,3 +30,11 @@ func (s *Stream[T]) Some(find func(item *T) bool) bool {
 func (s *Stream[T]) ToSlice() []T {
 	return s.arr
 }
+
+func Map[T, R any](s *Stream[T], mapper func(*T) R) *Stream[R] {
+	newStream := &Stream[R]{}
+	for i := range s.arr {
+		newStream.arr = append(newStream.arr, mapper(&s.arr[i]))
+	}
+	return newStream
+}
