@@ -13,7 +13,7 @@ func TestMin(t *testing.T) {
 
 func TestMax(t *testing.T) {
 	a, b := 1, 2
-	if Min(a, b) != 2 {
-		t.Error(Min(a, b))
+	if Max(a, b) != 2 {
+		t.Error(Max(a, b))
 	}
 }
