@@ -10,3 +10,10 @@ func TestMin(t *testing.T) {
 		t.Error(Min(a, b))
 	}
 }
+
+func TestMax(t *testing.T) {
+	a, b := 1, 2
+	if Min(a, b) != 2 {
+		t.Error(Min(a, b))
+	}
+}

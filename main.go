@@ -3,50 +3,27 @@ package main
 import (
 	"fmt"
 	"github.com/jakecoffman/generics/math"
-	"github.com/jakecoffman/generics/stream"
+	"github.com/jakecoffman/generics/slices"
+	"log"
+	"strconv"
 )
 
 func main() {
+	log.SetFlags(log.Lshortfile)
+
 	a, b := 1, 2
-	if math.Min(a, b) != 1 {
-		panic("Unexpected")
-	}
+	log.Println("min 1, 2 is ", math.Min(a, b))
 	c, d := 1.1, 2.2
-	if math.Min(c, d) != 1.1 {
-		panic("Unexpected")
-	}
+	log.Println("min 1.1, 2.2 is", math.Min(c, d))
 
-	arr1 := []int{1, 2, 3, 4}
-	v := stream.New(arr1).
-		Filter(func(item *int) bool {
-			return *item%2 != 0
-		}).
-		ToSlice()
-	fmt.Println(v)
+	arr := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	evens := slices.Filter(arr, func(i int) bool {
+		return arr[i]%2 == 0
+	})
+	fmt.Println("Evens:", evens)
 
-	arr2 := []string{"one", "two", "three", "four"}
-	v2 := stream.New(arr2).
-		Filter(func(item *string) bool {
-			return len(*item) < 4
-		}).
-		ToSlice()
-	fmt.Println(v2)
-
-	type User struct {
-		Name     string
-		Internal bool
-	}
-	arr3 := []User{
-		{Name: "Bob", Internal: true},
-		{Name: "Alice"},
-		{Name: "Cynthia"},
-		{Name: "Derrick", Internal: true},
-	}
-	v3 := stream.New(arr3).
-		Filter(func(item *User) bool {
-			return item.Internal
-		}).
-		ToSlice()
-
-	fmt.Println(v3)
+	strings := slices.Map(arr, func(i int) string {
+		return "v-" + strconv.Itoa(arr[i])
+	})
+	log.Println("Strings:", strings)
 }
