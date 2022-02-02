@@ -17,3 +17,21 @@ func Map[T, U any](arr []T, f func(i int) U) []U {
 	}
 	return result
 }
+
+func IndexOf[T any](arr []T, f func(i int) bool) int {
+	for i := range arr {
+		if f(i) {
+			return i
+		}
+	}
+	return -1
+}
+
+func Find[T any](arr []T, f func(i int) bool) *T {
+	for i := range arr {
+		if f(i) {
+			return &arr[i]
+		}
+	}
+	return nil
+}
