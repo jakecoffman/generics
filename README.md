@@ -40,7 +40,7 @@ You can avoid making a ton of variables by reusing where possible:
 ```go
 things := []int{1, 2, 3, 4}
 things = slices.Filter(things, func(i int) bool { return things[i]%2 == 0 })
-things = slices.Map(things, func(i int) int) { return i + 1 })
+things = slices.Map(things, func(i int) int { return i + 1 })
 ```
 
 Obviously if Map changes the type this won't work.
