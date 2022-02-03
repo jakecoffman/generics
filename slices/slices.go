@@ -62,3 +62,16 @@ func Reduce[T any](arr []T, f func(a, b T) T) T {
 	}
 	return result
 }
+
+// Unique returns a new array with duplicates removed.
+func Unique[T comparable](arr []T) []T {
+	result := []T{}
+	m := map[T]struct{}{}
+	for i := range arr {
+		if _, ok := m[arr[i]]; !ok {
+			result = append(result, arr[i])
+			m[arr[i]] = struct{}{}
+		}
+	}
+	return result
+}

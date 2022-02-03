@@ -56,3 +56,14 @@ func TestReduce(t *testing.T) {
 		t.Error(r)
 	}
 }
+
+func TestUnique(t *testing.T) {
+	v := []int{1, 1, 2, 3, 3, 3, 3, 4}
+	if r := Unique(v); !reflect.DeepEqual(r, []int{1, 2, 3, 4}) {
+		t.Error(r)
+	}
+	v = nil
+	if r := Unique(v); !reflect.DeepEqual(r, []int{}) {
+		t.Error(r)
+	}
+}
