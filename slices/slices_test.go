@@ -38,3 +38,21 @@ func TestSome(t *testing.T) {
 		t.Error()
 	}
 }
+
+func TestReduce(t *testing.T) {
+	var v []int
+	add := func(a, b int) int {
+		return a + b
+	}
+	if r := Reduce(v, add); r != 0 {
+		t.Error(r)
+	}
+	v = []int{1}
+	if r := Reduce(v, add); r != 1 {
+		t.Error(r)
+	}
+	v = []int{1, 9, 8, 2, 7, 3, 6, 4, 5, 5}
+	if r := Reduce(v, add); r != 50 {
+		t.Error(r)
+	}
+}

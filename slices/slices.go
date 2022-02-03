@@ -49,3 +49,16 @@ func Some[T any](arr []T, f func(i int) bool) bool {
 	}
 	return false
 }
+
+// Reduce accumulates a value from the array from left to right and returns the result.
+func Reduce[T any](arr []T, f func(a, b T) T) T {
+	if len(arr) == 0 {
+		var zero T
+		return zero
+	}
+	result := arr[0]
+	for i := 1; i < len(arr); i++ {
+		result = f(result, arr[i])
+	}
+	return result
+}
