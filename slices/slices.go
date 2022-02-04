@@ -75,3 +75,35 @@ func Unique[T comparable](arr []T) []T {
 	}
 	return result
 }
+
+// ForEach calls f on each element of arr.
+func ForEach[T any](arr []T, f func(e *T)) {
+	for i := range arr {
+		f(&arr[i])
+	}
+}
+
+// Pop removes the last item from the array and returns the pointer to it.
+// An array pointer must be passed so the array length can be modified.
+// A pointer is returned to avoid expensive copies.
+func Pop[T any](arr *[]T) *T {
+	length := len(*arr)
+	if length == 0 {
+		return nil
+	}
+	r := &(*arr)[length-1]
+	*arr = (*arr)[:length-1]
+	return r
+}
+
+// Push adds elements to the end of arr and returns the new length of the array.
+func Push[T any](arr *[]T, elements ...T) int {
+	*arr = append(*arr, elements...)
+	return len(*arr)
+}
+
+// Shift adds elements to the front of arr and returns the new length of the array.
+func Shift[T any](arr *[]T, elements ...T) int {
+	*arr = append(elements, *arr...)
+	return len(*arr)
+}

@@ -67,3 +67,61 @@ func TestUnique(t *testing.T) {
 		t.Error(r)
 	}
 }
+
+func TestForEach(t *testing.T) {
+	v := []int{1, 2, 3, 4, 5, 6, 7}
+	ForEach(v, func(e *int) {
+		*e += 10
+	})
+	if !reflect.DeepEqual(v, []int{11, 12, 13, 14, 15, 16, 17}) {
+		t.Error(v)
+	}
+}
+
+func TestPop(t *testing.T) {
+	v := []int{1, 2}
+	two := Pop(&v)
+	if *two != 2 {
+		t.Error(two)
+	}
+	if !reflect.DeepEqual(v, []int{1}) {
+		t.Error(v)
+	}
+	one := Pop(&v)
+	if *one != 1 {
+		t.Error(one)
+	}
+	if !reflect.DeepEqual(v, []int{}) {
+		t.Error(v)
+	}
+	if Pop(&v) != nil {
+		t.Error()
+	}
+	if !reflect.DeepEqual(v, []int{}) {
+		t.Error(v)
+	}
+}
+
+func TestPush(t *testing.T) {
+	var v []int
+	Push(&v, 1, 2, 3, 4)
+	if !reflect.DeepEqual(v, []int{1, 2, 3, 4}) {
+		t.Error(v)
+	}
+	Push(&v, 5, 6)
+	if !reflect.DeepEqual(v, []int{1, 2, 3, 4, 5, 6}) {
+		t.Error(v)
+	}
+}
+
+func TestShift(t *testing.T) {
+	var v []int
+	Shift(&v, 1, 2, 3, 4)
+	if !reflect.DeepEqual(v, []int{1, 2, 3, 4}) {
+		t.Error(v)
+	}
+	Shift(&v, 5, 6)
+	if !reflect.DeepEqual(v, []int{5, 6, 1, 2, 3, 4}) {
+		t.Error(v)
+	}
+}
