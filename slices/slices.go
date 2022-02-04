@@ -102,8 +102,25 @@ func Push[T any](arr *[]T, elements ...T) int {
 	return len(*arr)
 }
 
-// Shift adds elements to the front of arr and returns the new length of the array.
-func Shift[T any](arr *[]T, elements ...T) int {
+// Unshift adds elements to the front of arr and returns the new length of the array.
+func Unshift[T any](arr *[]T, elements ...T) int {
 	*arr = append(elements, *arr...)
 	return len(*arr)
+}
+
+// Shift removes an element from the front of arr and returns the new length of the array.
+func Shift[T any](arr *[]T) int {
+	if len(*arr) == 0 {
+		return 0
+	}
+	*arr = (*arr)[1:]
+	return len(*arr)
+}
+
+// Splice changes the contents of an array by removing or replacing existing
+// elements and/or adding new elements in place.
+func Splice[T any](arr *[]T, start, deleteCount int, items ...T) []T {
+	rv := (*arr)[start : start+deleteCount]
+	*arr = append((*arr)[:start], append(items, (*arr)[start+deleteCount:]...)...)
+	return rv
 }

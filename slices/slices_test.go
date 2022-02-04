@@ -114,14 +114,41 @@ func TestPush(t *testing.T) {
 	}
 }
 
-func TestShift(t *testing.T) {
+func TestUnshift(t *testing.T) {
 	var v []int
-	Shift(&v, 1, 2, 3, 4)
+	Unshift(&v, 1, 2, 3, 4)
 	if !reflect.DeepEqual(v, []int{1, 2, 3, 4}) {
 		t.Error(v)
 	}
-	Shift(&v, 5, 6)
+	Unshift(&v, 5, 6)
 	if !reflect.DeepEqual(v, []int{5, 6, 1, 2, 3, 4}) {
 		t.Error(v)
+	}
+}
+
+func TestShift(t *testing.T) {
+	v := []int{1, 2}
+	Shift(&v)
+	if !reflect.DeepEqual(v, []int{2}) {
+		t.Error(v)
+	}
+	Shift(&v)
+	if !reflect.DeepEqual(v, []int{}) {
+		t.Error(v)
+	}
+	Shift(&v)
+	if !reflect.DeepEqual(v, []int{}) {
+		t.Error(v)
+	}
+}
+
+func TestSplice(t *testing.T) {
+	v := []int{0, 1, 2, 3, 4}
+	removed := Splice(&v, 2, 2, 9, 9, 8)
+	if !reflect.DeepEqual(v, []int{0, 1, 9, 9, 8, 4}) {
+		t.Error(v)
+	}
+	if !reflect.DeepEqual(removed, []int{2, 3}) {
+		t.Error(removed)
 	}
 }
