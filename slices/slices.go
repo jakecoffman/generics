@@ -124,3 +124,13 @@ func Splice[T any](arr *[]T, start, deleteCount int, items ...T) []T {
 	*arr = append((*arr)[:start], append(items, (*arr)[start+deleteCount:]...)...)
 	return rv
 }
+
+// Reverse reverses the array. Unlike JavaScript this does not mutate the array passed.
+func Reverse[T any](arr []T) []T {
+	result := make([]T, len(arr))
+	copy(result, arr)
+	for i, j := 0, len(result)-1; i < j; i, j = i+1, j-1 {
+		result[i], result[j] = result[j], result[i]
+	}
+	return result
+}

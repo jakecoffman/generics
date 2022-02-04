@@ -152,3 +152,16 @@ func TestSplice(t *testing.T) {
 		t.Error(removed)
 	}
 }
+
+func TestReverse(t *testing.T) {
+	v := []int{0, 1, 2, 3}
+	r := Reverse(v)
+	if !reflect.DeepEqual(r, []int{3, 2, 1, 0}) {
+		t.Error(v)
+	}
+	v = []int{0, 1, 2, 3, 4}
+	r = Reverse(v)
+	if !reflect.DeepEqual(r, []int{4, 3, 2, 1, 0}) {
+		t.Error(v)
+	}
+}
