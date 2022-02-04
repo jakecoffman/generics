@@ -17,3 +17,9 @@ func TestMax(t *testing.T) {
 		t.Error(Max(a, b))
 	}
 }
+
+func BenchmarkMax(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Max(3, 9)
+	}
+}
