@@ -4,6 +4,10 @@ JavaScript style generics package.
 
 For usage see [main.go](main.go)
 
+## Performance
+
+Everything in this library is slower than if written by hand, but the readability might be worth it to you in your use case.
+
 ## Design choices
 
 ### index vs pointers

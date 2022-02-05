@@ -165,3 +165,37 @@ func TestReverse(t *testing.T) {
 		t.Error(v)
 	}
 }
+
+// Performance of looping in this library is always going to be worse than
+// writing the for loop because at the very least we're introducing a function
+// call to each element of the array.
+func BenchmarkForEach(b *testing.B) {
+	const size = 1000
+	v := make([]int, size)
+	for i := 0; i < size; i++ {
+		v[i] = i
+	}
+
+	b.Run("ForEach", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			ForEach(v, func(e *int) {
+				*e += 1
+			})
+		}
+	})
+
+	// reset in case it matters
+	for i := 0; i < size; i++ {
+		v[i] = i
+	}
+
+	b.Run("Native", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for index := range v {
+				// I tried keeping this as close to the implementation of ForEach as above
+				e := &v[index]
+				*e += 1
+			}
+		}
+	})
+}
