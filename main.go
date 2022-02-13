@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"github.com/jakecoffman/generics/math"
 	"github.com/jakecoffman/generics/slices"
+	"io"
 	"log"
+	"net/http"
 	"strconv"
 )
 
@@ -25,6 +28,17 @@ func main() {
 		return "v-" + strconv.Itoa(arr[i])
 	})
 	log.Println("Strings:", strings)
+
+	// MapWithPool is an easy way to rate-limit http calls
+	slices.MapWithPool(arr, 4, func(i int) error {
+		r, err := http.Get(fmt.Sprint("https://example.com?q=", arr[i]))
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+		io.Copy(io.Discard, r.Body)
+		return nil
+	})
 
 	things := []Thing{
 		{1, "Alice"},

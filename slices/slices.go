@@ -1,5 +1,7 @@
 package slices
 
+import "sync"
+
 // Filter removes elements to which f is false.
 func Filter[T any](arr []T, f func(i int) bool) []T {
 	var result []T
@@ -17,6 +19,31 @@ func Map[T, U any](arr []T, f func(i int) U) []U {
 	for i := range arr {
 		result[i] = f(i)
 	}
+	return result
+}
+
+// MapWithPool is Map but runs with a goroutine pool of workers.
+func MapWithPool[T, U any](arr []T, poolSize int, f func(i int) U) []U {
+	inputs := make(chan int)
+	result := make([]U, len(arr))
+
+	wg := sync.WaitGroup{}
+	wg.Add(poolSize)
+	for w := 1; w <= poolSize; w++ {
+		go func() {
+			for i := range inputs {
+				result[i] = f(i)
+			}
+			wg.Done()
+		}()
+	}
+
+	for i := range arr {
+		inputs <- i
+	}
+	close(inputs)
+	wg.Wait()
+
 	return result
 }
 

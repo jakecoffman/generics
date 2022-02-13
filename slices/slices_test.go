@@ -2,6 +2,7 @@ package slices
 
 import (
 	"reflect"
+	"runtime"
 	"testing"
 )
 
@@ -23,6 +24,41 @@ func TestMap(t *testing.T) {
 	if !reflect.DeepEqual(arr2, []bool{false, true, false, true}) {
 		t.Error(arr)
 	}
+}
+
+func TestMapP(t *testing.T) {
+	arr := []int{1, 2, 3, 4}
+	arr2 := MapWithPool(arr, 2, func(i int) bool {
+		return arr[i]%2 == 0
+	})
+	if !reflect.DeepEqual(arr2, []bool{false, true, false, true}) {
+		t.Error(arr)
+	}
+}
+
+func BenchmarkMap(b *testing.B) {
+	arr := make([]int, 1000)
+	for i := 0; i < 1000; i++ {
+		arr[i] = i
+	}
+	expensiveOperation := func(i int) bool {
+		v := arr[i]
+		for j := 0; j < 10000; j++ {
+			v++
+		}
+		return v%2 == 0
+	}
+
+	b.Run("Map", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			Map(arr, expensiveOperation)
+		}
+	})
+	b.Run("MapWithPool", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			MapWithPool(arr, runtime.NumCPU(), expensiveOperation)
+		}
+	})
 }
 
 func TestSome(t *testing.T) {
