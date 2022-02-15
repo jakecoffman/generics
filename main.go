@@ -30,15 +30,21 @@ func main() {
 	log.Println("Strings:", strings)
 
 	// MapWithPool is an easy way to rate-limit http calls
-	slices.MapWithPool(arr, 4, func(i int) error {
-		r, err := http.Get(fmt.Sprint("https://example.com?q=", arr[i]))
+	codes := []int{200, 400, 500}
+	results := slices.MapWithPool(codes, 4, func(i int) error {
+		url := fmt.Sprint("https://httpbin.org/status/", codes[i])
+		r, err := http.Get(url)
 		if err != nil {
 			log.Println(err)
 			return err
 		}
 		io.Copy(io.Discard, r.Body)
-		return nil
+		if r.StatusCode < 400 {
+			return nil
+		}
+		return fmt.Errorf("code %v", r.StatusCode)
 	})
+	fmt.Println("HTTP Results:", results)
 
 	things := []Thing{
 		{1, "Alice"},

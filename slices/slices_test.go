@@ -114,6 +114,16 @@ func TestForEach(t *testing.T) {
 	}
 }
 
+func TestForEachWithPool(t *testing.T) {
+	v := []int{1, 2, 3, 4, 5, 6, 7}
+	ForEachWithPool(v, 4, func(e *int) {
+		*e += 10
+	})
+	if !reflect.DeepEqual(v, []int{11, 12, 13, 14, 15, 16, 17}) {
+		t.Error(v)
+	}
+}
+
 func TestPop(t *testing.T) {
 	v := []int{1, 2}
 	two := Pop(&v)

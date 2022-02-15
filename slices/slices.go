@@ -110,6 +110,28 @@ func ForEach[T any](arr []T, f func(e *T)) {
 	}
 }
 
+// ForEachWithPool is ForEach but runs with a pool of goroutines.
+func ForEachWithPool[T any](arr []T, poolSize int, f func(e *T)) {
+	inputs := make(chan int)
+
+	wg := sync.WaitGroup{}
+	wg.Add(poolSize)
+	for w := 1; w <= poolSize; w++ {
+		go func() {
+			for i := range inputs {
+				f(&arr[i])
+			}
+			wg.Done()
+		}()
+	}
+
+	for i := range arr {
+		inputs <- i
+	}
+	close(inputs)
+	wg.Wait()
+}
+
 // Pop removes the last item from the array and returns the pointer to it.
 // An array pointer must be passed so the array length can be modified.
 // A pointer is returned to avoid expensive copies.
